@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<canvas id="canvas" style="border: 1px solid black; margin: 20px;">
+</canvas>
+
+<script type="module" src="{{ url_for('static', filename='js/canvas.js') }}"></script>
+{% endblock %}
