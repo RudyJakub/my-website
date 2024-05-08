@@ -14,6 +14,7 @@ class ElectricFieldSimulator {
     private testCharges: TestCharge[] = []
     private prevtimestamp: number = 0
     public pause: boolean = true
+    public chargedSurfaceActive = true
 
     constructor(private canvas: HTMLCanvasElement) {
         this.canvas.width = window.innerWidth - 42
@@ -24,6 +25,8 @@ class ElectricFieldSimulator {
 
     init() {
         // let this be infinitely large surface (negative charge)
+        // this can be turn on/off
+        // block below does not contain electric field logic
         let surface = new Block(
             "chargedSurface#1",
             { x: 0, y: this.canvas.height - 20} as Vec2,
@@ -33,6 +36,38 @@ class ElectricFieldSimulator {
 
         this.blocks.push(surface)
         this.loop(0)
+    }
+
+    drawLegend() {
+        this.context.beginPath()
+        this.context.moveTo(20, 20) // center
+        this.context.lineTo(20, 120) // Y
+        this.context.moveTo(20, 20) // center
+        this.context.lineTo(120, 20) // X
+        // X arrow:
+        this.context.moveTo(120, 20)
+        this.context.lineTo(100, 10)
+        this.context.moveTo(120, 20)
+        this.context.lineTo(100, 30)
+        // Y arrow:
+        this.context.moveTo(20, 120)
+        this.context.lineTo(10, 100)
+        this.context.moveTo(20, 120)
+        this.context.lineTo(30, 100)
+        // Y symbol:
+        this.context.moveTo(50, 110)
+        this.context.lineTo(44, 100)
+        this.context.moveTo(50, 110)
+        this.context.lineTo(56, 100)
+        this.context.moveTo(50, 110)
+        this.context.lineTo(50, 125)
+        // X symbol:
+        this.context.moveTo(115, 65)
+        this.context.lineTo(100, 45)
+        this.context.moveTo(100, 65)
+        this.context.lineTo(115, 45)
+        // draw:
+        this.context.stroke()
     }
 
     placeCharge(charge: Charge) {
@@ -55,19 +90,24 @@ class ElectricFieldSimulator {
         if (!this.pause) {
             this.update(dt);
         }
+        this.drawLegend()
         window.requestAnimationFrame(this.loop.bind(this));
     }
 
     update(dt: number) {
         // Electric field from infinitely large surface at the bottom
-        const SurfaceField = { x: 0, y: 0 }
+        let y = 0
+        if (this.chargedSurfaceActive) {
+            y = -10 * Math.pow(10, -12)
+        }
+        const surfaceField = { x: 0, y: y }
         const movingCharges = [
             ...this.charges as IChargedParticle[],
             ...this.testCharges as IChargedParticle[]
         ]
         movingCharges.forEach((charge) => {
             const fieldSuperposition = this.computeFieldSuperposition(charge)
-            const fieldTotal = Vec2.add(SurfaceField, fieldSuperposition)
+            const fieldTotal = Vec2.add(surfaceField, fieldSuperposition)
             let force = Vec2.multiply(fieldTotal, -charge.magnitude)
             charge.applyForce(force)
             charge.update(dt)
@@ -100,7 +140,6 @@ class ElectricFieldSimulator {
             fieldSuperposition = Vec2.add(fieldSuperposition, fieldVector)
         })
         fieldSuperposition = Vec2.multiply(fieldSuperposition, Constants.ELECTRIC_CONSTANT)
-        console.log(fieldSuperposition)
         return fieldSuperposition
     }
 

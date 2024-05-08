@@ -12,12 +12,15 @@
 
     <div class="row pt-3">
         <div class="col">
-            <input id="posX" type="text" class="form-control" placeholder="Position X">
+            <label class="label">Initial Velocity X</label>
+            <input id="velX" type="text" class="form-control" placeholder="Velocity X" value="0">
         </div>
         <div class="col">
-            <input id="posY" type="text" class="form-control" placeholder="Position Y">
+            <label class="label">Initial Velocity Y</label>
+            <input id="velY" type="text" class="form-control" placeholder="Velocity Y" value="0">
         </div>
         <div class="col">
+            <label class="label">Magnitude</label>
             <input id="mag" type="text" class="form-control" placeholder="Magnitude" value="-100">
         </div>
 
@@ -32,6 +35,10 @@
           <div class="form-check col">
             <input type="radio" class="form-check-input" id="radio3" name="optradio" value="option3">Test
             <label class="form-check-label"></label>
+          </div>
+          <div class="form-check form-switch col">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+            <label class="form-check-label" for="flexSwitchCheckChecked">Charged Surface</label>
           </div>
     </div>
 </div>

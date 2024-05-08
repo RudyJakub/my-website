@@ -11,12 +11,13 @@ var ChargeTypes;
 })(ChargeTypes || (ChargeTypes = {}));
 const canvas = document.getElementById('canvas');
 const space = new ElectricFieldSimulator(canvas);
-const posX = document.getElementById("posX");
-const posY = document.getElementById("posY");
+const velX = document.getElementById("velX");
+const velY = document.getElementById("velY");
 const mag = document.getElementById("mag");
 const radio1 = document.getElementById("radio1");
 const radio2 = document.getElementById("radio2");
 const radio3 = document.getElementById("radio3");
+const checkboxswitch = document.getElementById("flexSwitchCheckChecked");
 function getChargeType() {
     if (radio1.checked === true) {
         return ChargeTypes.NORMAL;
@@ -40,30 +41,32 @@ document.getElementById("restartButton").addEventListener("click", () => {
     console.log("RESTARTING");
     space.restart();
 });
-canvas.addEventListener("mousemove", (e) => {
-    const relativeX = e.clientX - canvas.offsetLeft;
-    const relativeY = e.clientY - canvas.offsetTop;
-    posX.value = relativeX.toString();
-    posY.value = relativeY.toString();
-});
 canvas.addEventListener("click", (e) => {
     const relativeX = e.clientX - canvas.offsetLeft;
     const relativeY = e.clientY - canvas.offsetTop;
     switch (getChargeType()) {
         case ChargeTypes.NORMAL:
-            const charge = new Charge(Math.random().toString(), { x: relativeX, y: relativeY }, { x: 0, y: 0 }, Constants.ELEMENTARY_CHARGE * parseFloat(mag.value), Constants.ELECTRON_MASS);
+            const charge = new Charge(Math.random().toString(), { x: relativeX, y: relativeY }, { x: parseFloat(velX.value), y: parseFloat(velY.value) }, Constants.ELEMENTARY_CHARGE * -parseFloat(mag.value), Constants.ELECTRON_MASS);
             space.placeCharge(charge);
             break;
         case ChargeTypes.STATIC:
-            const staticCharge = new StaticCharge(Math.random().toString(), { x: relativeX, y: relativeY }, Constants.ELEMENTARY_CHARGE * parseFloat(mag.value), Constants.ELECTRON_MASS);
+            const staticCharge = new StaticCharge(Math.random().toString(), { x: relativeX, y: relativeY }, Constants.ELEMENTARY_CHARGE * -parseFloat(mag.value), Constants.ELECTRON_MASS);
             space.placeStaticCharge(staticCharge);
             break;
         case ChargeTypes.TEST:
-            const testCharge = new TestCharge(Math.random().toString(), { x: relativeX, y: relativeY }, { x: 0, y: 0 }, Constants.ELEMENTARY_CHARGE * parseFloat(mag.value), Constants.ELECTRON_MASS);
+            const testCharge = new TestCharge(Math.random().toString(), { x: relativeX, y: relativeY }, { x: parseFloat(velX.value), y: parseFloat(velY.value) }, Constants.ELEMENTARY_CHARGE * -parseFloat(mag.value), Constants.ELECTRON_MASS);
             space.placeTestCharge(testCharge);
             break;
         default:
             console.log("?");
+    }
+});
+checkboxswitch.addEventListener("click", (e) => {
+    if (checkboxswitch.checked) {
+        space.chargedSurfaceActive = true;
+    }
+    else {
+        space.chargedSurfaceActive = false;
     }
 });
 space.init();
