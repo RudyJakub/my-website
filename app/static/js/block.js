@@ -1,12 +1,15 @@
 class Block {
-    constructor(pos, size) {
+    constructor(id, pos, size, color) {
+        this.id = id;
         this.pos = pos;
         this.size = size;
+        this.color = color;
     }
     draw(ctx) {
-        let randomColor = Math.random() > 0.5 ? '#45808f' : '#0099b0';
-        ctx.fillStyle = randomColor;
+        ctx.fillStyle = this.color;
         ctx.fillRect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+    }
+    update(dt) {
     }
 }
 export default Block;

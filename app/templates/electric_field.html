@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 style="text-align: center; margin-top: 10px;">Electric Field</h1>
+<canvas id="canvas" style="border: 1px solid black; margin: 20px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+</canvas>
+
+<div class="container">
+    <button id="startButton" type="button" style="margin-right: 10px;" class="btn btn-success btn-lg">START</button>
+    <button id="pauseButton" type="button" style="margin-right: 10px;" class="btn btn-secondary btn-lg">PAUSE</button>
+    <button id="restartButton" type="button" style="margin-right: 10px;" class="btn btn-warning btn-lg">RESTART</button>
+
+    <div class="row pt-3">
+        <div class="col">
+            <input id="posX" type="text" class="form-control" placeholder="Position X">
+        </div>
+        <div class="col">
+            <input id="posY" type="text" class="form-control" placeholder="Position Y">
+        </div>
+        <div class="col">
+            <input id="mag" type="text" class="form-control" placeholder="Magnitude" value="-100">
+        </div>
+
+        <div class="form-check col ms-3">
+            <input type="radio" class="form-check-input" id="radio1" name="optradio" value="option1">Charge
+            <label class="form-check-label" for="radio1"></label>
+          </div>
+          <div class="form-check col">
+            <input type="radio" class="form-check-input" id="radio2" name="optradio" value="option2" checked>Static
+            <label class="form-check-label" for="radio2"></label>
+          </div>
+          <div class="form-check col">
+            <input type="radio" class="form-check-input" id="radio3" name="optradio" value="option3">Test
+            <label class="form-check-label"></label>
+          </div>
+    </div>
+</div>
+
+<script type="module" src="{{ url_for('static', filename='js/canvas.js') }}"></script>
+{% endblock %}

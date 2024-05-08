@@ -10,13 +10,7 @@
           font-family: 'Courier New', monospace;
           padding: 0;
           margin: 0;
-          background-image: url("{{ url_for('static', filename='img/background.jpg') }}");
-          image-rendering: -webkit-optimize-contrast;
-  
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: cover;
-          background-attachment: fixed;
+          background-color:rgb(233, 231, 218);
         }
 
         .offcanvas-backdrop.show {
@@ -30,13 +24,12 @@
 
     <div class="offcanvas offcanvas-start" id="offcanvas">
         <div class="offcanvas-header">
-          <h1 class="offcanvas-title">Canvas Playground</h1>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
         <div class="offcanvas-body" style="font-size: x-large;">
           <a href="{{ url_for('home') }}">Home</a>
           <br>
-          <a href="{{ url_for('canvas') }}">Canvas</a>
+          <a href="{{ url_for('electric_field') }}">Electric Field</a>
           <br>
           <a>Canvas #2</a>
         </div>
