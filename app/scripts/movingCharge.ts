@@ -1,7 +1,7 @@
 import { IChargedParticle, ICentralElectricField } from "./interfaces.js";
 import Vec2 from "./vector.js";
 
-class Charge implements IChargedParticle, ICentralElectricField {
+class MovingCharge implements IChargedParticle, ICentralElectricField {
     public id: string
     public pos: Vec2
     public vel: Vec2
@@ -65,4 +65,4 @@ class Charge implements IChargedParticle, ICentralElectricField {
     }
 }
 
-export default Charge
+export default MovingCharge

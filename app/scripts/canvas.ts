@@ -1,5 +1,5 @@
 import ElectricFieldSimulator from "./simulator.js"
-import Charge from "./charge.js";
+import MovingCharge from "./movingCharge.js";
 import StaticCharge from "./staticCharge.js";
 import Constants from "./constants.js";
 import TestCharge from "./testCharge.js";
@@ -52,14 +52,14 @@ canvas.addEventListener("click", (e) => {
     const relativeY = e.clientY - canvas.offsetTop;
     switch (getChargeType()) {
         case ChargeTypes.NORMAL:
-            const charge = new Charge(
+            const movingCharge = new MovingCharge(
                 Math.random().toString(),
                 { x: relativeX, y: relativeY },
                 { x: parseFloat(velX.value), y: parseFloat(velY.value) },
                 Constants.ELEMENTARY_CHARGE * -parseFloat(mag.value),
                 Constants.ELECTRON_MASS
             )
-            space.placeCharge(charge)
+            space.placeMovingCharge(movingCharge)
             break;
         case ChargeTypes.STATIC:
             const staticCharge = new StaticCharge(

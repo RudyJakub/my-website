@@ -1,5 +1,5 @@
 import Block from "./block.js";
-import Charge from "./charge.js"
+import MovingCharge from "./movingCharge.js"
 import Vec2 from "./vector.js";
 import {IDrawable, ICentralElectricField, IChargedParticle } from "./interfaces.js";
 import Constants from "./constants.js";
@@ -9,7 +9,7 @@ import TestCharge from "./testCharge.js";
 class ElectricFieldSimulator {
     private context: CanvasRenderingContext2D;
     private blocks: IDrawable[] = []
-    private charges: Charge[] = []
+    private movingCharges: MovingCharge[] = []
     private staticCharges: StaticCharge[] = []
     private testCharges: TestCharge[] = []
     private prevtimestamp: number = 0
@@ -70,8 +70,8 @@ class ElectricFieldSimulator {
         this.context.stroke()
     }
 
-    placeCharge(charge: Charge) {
-        this.charges.push(charge)
+    placeMovingCharge(movingCharge: MovingCharge) {
+        this.movingCharges.push(movingCharge)
     }
 
     placeStaticCharge(staticCharge: StaticCharge) {
@@ -102,7 +102,7 @@ class ElectricFieldSimulator {
         }
         const surfaceField = { x: 0, y: y }
         const movingCharges = [
-            ...this.charges as IChargedParticle[],
+            ...this.movingCharges as IChargedParticle[],
             ...this.testCharges as IChargedParticle[]
         ]
         movingCharges.forEach((charge) => {
@@ -117,7 +117,7 @@ class ElectricFieldSimulator {
     computeFieldSuperposition(charge: IChargedParticle): Vec2 {
         let fieldSuperposition: Vec2 = { x: 0, y: 0 }
         const electricFields: ICentralElectricField[] = [
-            ...this.charges as ICentralElectricField[],
+            ...this.movingCharges as ICentralElectricField[],
             ...this.staticCharges as ICentralElectricField[]
         ]
         const otherElectricFields = electricFields.filter((field) => {
@@ -145,7 +145,7 @@ class ElectricFieldSimulator {
 
     draw() {
         const drawables: IDrawable[] = [
-            ...this.charges,
+            ...this.movingCharges,
             ...this.staticCharges,
             ...this.testCharges,
             ...this.blocks
@@ -158,7 +158,7 @@ class ElectricFieldSimulator {
     restart() {
         this.blocks = []
         this.staticCharges = []
-        this.charges = []
+        this.movingCharges = []
         this.testCharges = []
         this.prevtimestamp = 0
         this.init()
