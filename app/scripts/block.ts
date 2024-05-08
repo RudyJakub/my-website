@@ -1,12 +1,16 @@
-import Vec2 from "./vec";
+import { IDrawable } from "./interfaces";
+import Vec2 from "./vector";
 
-class Block {
-    constructor(public pos: Vec2, public size: Vec2) {}
+class Block implements IDrawable {
+    constructor(public id: string, public pos: Vec2, public size: Vec2, public color: string) {}
 
-    draw(ctx: CanvasRenderingContext2D) {
-        let randomColor = Math.random() > 0.5? '#45808f' : '#0099b0';
-        ctx.fillStyle = randomColor;
+    draw(ctx: CanvasRenderingContext2D): void {
+        ctx.fillStyle = this.color;
         ctx.fillRect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+    }
+
+    update(dt: number): void {
+        
     }
 }
 
