@@ -16,7 +16,6 @@ const radio1 = document.getElementById("radio1");
 const radio2 = document.getElementById("radio2");
 const radio3 = document.getElementById("radio3");
 const checkboxswitch = document.getElementById("flexSwitchCheckChecked");
-const checkboxswitch2 = document.getElementById("flexSwitchCheckChecked2");
 function getChargeType() {
     if (radio1.checked === true) {
         return ChargeTypes.NORMAL;
@@ -39,14 +38,6 @@ document.getElementById("pauseButton").addEventListener("click", () => {
 document.getElementById("restartButton").addEventListener("click", () => {
     console.log("RESTARTING");
     space.restart();
-});
-canvas.addEventListener("mouseover", (e) => {
-    const relativeX = e.clientX - canvas.offsetLeft;
-    const relativeY = e.clientY - canvas.offsetTop;
-    space.mousePos = {
-        x: relativeX,
-        y: relativeY
-    };
 });
 canvas.addEventListener("click", (e) => {
     const relativeX = e.clientX - canvas.offsetLeft;
@@ -74,14 +65,6 @@ checkboxswitch.addEventListener("click", (e) => {
     }
     else {
         space.chargedSurfaceActive = false;
-    }
-});
-checkboxswitch2.addEventListener("click", (e) => {
-    if (checkboxswitch2.checked) {
-        space.chargedMouseActive = true;
-    }
-    else {
-        space.chargedMouseActive = false;
     }
 });
 space.init();

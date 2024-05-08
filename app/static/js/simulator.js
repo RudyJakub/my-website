@@ -11,11 +11,9 @@ class ElectricFieldSimulator {
         this.prevtimestamp = 0;
         this.pause = true;
         this.chargedSurfaceActive = true;
-        this.chargedMouseActive = false;
         this.canvas.width = window.innerWidth - 42;
         this.canvas.height = window.innerHeight - 400;
         this.context = this.canvas.getContext('2d');
-        this.mousePos = { x: 0, y: 0 };
     }
     init() {
         // let this be infinitely large surface (negative charge)
@@ -96,19 +94,10 @@ class ElectricFieldSimulator {
         });
     }
     computeFieldSuperposition(charge) {
-        let mouseElectricField = {
-            id: "mouseElectricField",
-            pos: this.mousePos,
-            magnitude: 0
-        };
-        if (this.chargedMouseActive) {
-            mouseElectricField.magnitude = 100 * Constants.ELEMENTARY_CHARGE;
-        }
         let fieldSuperposition = { x: 0, y: 0 };
         const electricFields = [
             ...this.Charges,
-            ...this.staticCharges,
-            mouseElectricField
+            ...this.staticCharges
         ];
         const otherElectricFields = electricFields.filter((field) => {
             return field.id !== charge.id;

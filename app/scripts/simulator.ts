@@ -13,14 +13,11 @@ class ElectricFieldSimulator {
     private prevtimestamp: number = 0
     public pause: boolean = true
     public chargedSurfaceActive = true
-    public chargedMouseActive = false
-    public mousePos: Vec2
 
     constructor(private canvas: HTMLCanvasElement) {
         this.canvas.width = window.innerWidth - 42
         this.canvas.height = window.innerHeight - 400
         this.context = this.canvas.getContext('2d')!;
-        this.mousePos = { x: 0, y: 0}
     }
 
     init() {
@@ -115,19 +112,10 @@ class ElectricFieldSimulator {
     }
 
     computeFieldSuperposition(charge: IChargedParticle): Vec2 {
-        let mouseElectricField: ICentralElectricField = {
-            id: "mouseElectricField",
-            pos: this.mousePos,
-            magnitude: 0
-        }
-        if (this.chargedMouseActive) {
-            mouseElectricField.magnitude = 100 * Constants.ELEMENTARY_CHARGE 
-        }
         let fieldSuperposition: Vec2 = { x: 0, y: 0 }
         const electricFields: ICentralElectricField[] = [
             ...this.Charges as ICentralElectricField[],
-            ...this.staticCharges as ICentralElectricField[],
-            mouseElectricField
+            ...this.staticCharges as ICentralElectricField[]
         ]
         const otherElectricFields = electricFields.filter((field) => {
             return field.id !== charge.id
