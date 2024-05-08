@@ -1,12 +1,12 @@
 class Charge {
-    constructor(id, initial_pos, initial_vel, magnitude, mass) {
+    constructor(id, initial_pos, initial_vel, magnitude, mass, radius) {
         this.id = id;
         this.pos = initial_pos;
         this.vel = initial_vel;
         this.acc = { x: 0, y: 0 };
         this.magnitude = magnitude;
         this.mass = mass;
-        this.radius = 8;
+        this.radius = radius;
     }
     getColor() {
         if (this.magnitude > 0) {

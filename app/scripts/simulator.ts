@@ -1,26 +1,26 @@
 import Block from "./block.js";
-import MovingCharge from "./movingCharge.js"
+import Charge from "./charge.js"
 import Vec2 from "./vector.js";
 import {IDrawable, ICentralElectricField, IChargedParticle } from "./interfaces.js";
 import Constants from "./constants.js";
-import StaticCharge from "./staticCharge.js";
-import TestCharge from "./testCharge.js";
 
 class ElectricFieldSimulator {
     private context: CanvasRenderingContext2D;
     private blocks: IDrawable[] = []
-    private movingCharges: MovingCharge[] = []
-    private staticCharges: StaticCharge[] = []
-    private testCharges: TestCharge[] = []
+    private Charges: Charge[] = []
+    private staticCharges: Charge[] = []
+    private testCharges: Charge[] = []
     private prevtimestamp: number = 0
     public pause: boolean = true
     public chargedSurfaceActive = true
+    public chargedMouseActive = false
+    public mousePos: Vec2
 
     constructor(private canvas: HTMLCanvasElement) {
         this.canvas.width = window.innerWidth - 42
         this.canvas.height = window.innerHeight - 400
         this.context = this.canvas.getContext('2d')!;
-
+        this.mousePos = { x: 0, y: 0}
     }
 
     init() {
@@ -70,15 +70,15 @@ class ElectricFieldSimulator {
         this.context.stroke()
     }
 
-    placeMovingCharge(movingCharge: MovingCharge) {
-        this.movingCharges.push(movingCharge)
+    placeCharge(Charge: Charge) {
+        this.Charges.push(Charge)
     }
 
-    placeStaticCharge(staticCharge: StaticCharge) {
+    placeStaticCharge(staticCharge: Charge) {
         this.staticCharges.push(staticCharge)
     }
 
-    placeTestCharge(testCharge: TestCharge) {
+    placeTestCharge(testCharge: Charge) {
         this.testCharges.push(testCharge)
     }
 
@@ -101,11 +101,11 @@ class ElectricFieldSimulator {
             y = -10 * Math.pow(10, -12)
         }
         const surfaceField = { x: 0, y: y }
-        const movingCharges = [
-            ...this.movingCharges as IChargedParticle[],
+        const Charges = [
+            ...this.Charges as IChargedParticle[],
             ...this.testCharges as IChargedParticle[]
         ]
-        movingCharges.forEach((charge) => {
+        Charges.forEach((charge) => {
             const fieldSuperposition = this.computeFieldSuperposition(charge)
             const fieldTotal = Vec2.add(surfaceField, fieldSuperposition)
             let force = Vec2.multiply(fieldTotal, -charge.magnitude)
@@ -115,10 +115,19 @@ class ElectricFieldSimulator {
     }
 
     computeFieldSuperposition(charge: IChargedParticle): Vec2 {
+        let mouseElectricField: ICentralElectricField = {
+            id: "mouseElectricField",
+            pos: this.mousePos,
+            magnitude: 0
+        }
+        if (this.chargedMouseActive) {
+            mouseElectricField.magnitude = 100 * Constants.ELEMENTARY_CHARGE 
+        }
         let fieldSuperposition: Vec2 = { x: 0, y: 0 }
         const electricFields: ICentralElectricField[] = [
-            ...this.movingCharges as ICentralElectricField[],
-            ...this.staticCharges as ICentralElectricField[]
+            ...this.Charges as ICentralElectricField[],
+            ...this.staticCharges as ICentralElectricField[],
+            mouseElectricField
         ]
         const otherElectricFields = electricFields.filter((field) => {
             return field.id !== charge.id
@@ -145,7 +154,7 @@ class ElectricFieldSimulator {
 
     draw() {
         const drawables: IDrawable[] = [
-            ...this.movingCharges,
+            ...this.Charges,
             ...this.staticCharges,
             ...this.testCharges,
             ...this.blocks
@@ -158,7 +167,7 @@ class ElectricFieldSimulator {
     restart() {
         this.blocks = []
         this.staticCharges = []
-        this.movingCharges = []
+        this.Charges = []
         this.testCharges = []
         this.prevtimestamp = 0
         this.init()

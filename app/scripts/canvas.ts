@@ -1,8 +1,6 @@
 import ElectricFieldSimulator from "./simulator.js"
-import MovingCharge from "./movingCharge.js";
-import StaticCharge from "./staticCharge.js";
+import Charge from "./charge.js";
 import Constants from "./constants.js";
-import TestCharge from "./testCharge.js";
 
 enum ChargeTypes {
     NORMAL = 1,
@@ -19,6 +17,7 @@ const radio1 = document.getElementById("radio1")! as HTMLInputElement
 const radio2 = document.getElementById("radio2")! as HTMLInputElement
 const radio3 = document.getElementById("radio3")! as HTMLInputElement
 const checkboxswitch = document.getElementById("flexSwitchCheckChecked")! as HTMLInputElement
+const checkboxswitch2 = document.getElementById("flexSwitchCheckChecked2")! as HTMLInputElement
 
 function getChargeType() {
     if (radio1.checked === true) {
@@ -47,36 +46,49 @@ document.getElementById("restartButton")!.addEventListener("click", () => {
     space.restart()
 })
 
+canvas.addEventListener("mouseover", (e) => {
+    const relativeX = e.clientX - canvas.offsetLeft;
+    const relativeY = e.clientY - canvas.offsetTop;
+    space.mousePos = {
+        x: relativeX,
+        y: relativeY
+    }
+})
+
 canvas.addEventListener("click", (e) => {
     const relativeX = e.clientX - canvas.offsetLeft;
     const relativeY = e.clientY - canvas.offsetTop;
     switch (getChargeType()) {
         case ChargeTypes.NORMAL:
-            const movingCharge = new MovingCharge(
+            const charge = new Charge(
                 Math.random().toString(),
                 { x: relativeX, y: relativeY },
                 { x: parseFloat(velX.value), y: parseFloat(velY.value) },
                 Constants.ELEMENTARY_CHARGE * -parseFloat(mag.value),
-                Constants.ELECTRON_MASS
+                Constants.ELECTRON_MASS,
+                8
             )
-            space.placeMovingCharge(movingCharge)
+            space.placeCharge(charge)
             break;
         case ChargeTypes.STATIC:
-            const staticCharge = new StaticCharge(
+            const staticCharge = new Charge(
                 Math.random().toString(),
                 { x: relativeX, y: relativeY },
+                { x: 0, y: 0 },
                 Constants.ELEMENTARY_CHARGE * -parseFloat(mag.value),
-                Constants.ELECTRON_MASS
+                Constants.ELECTRON_MASS,
+                16
             )
             space.placeStaticCharge(staticCharge)
             break;
         case ChargeTypes.TEST:
-            const testCharge = new TestCharge(
+            const testCharge = new Charge(
                 Math.random().toString(),
                 { x: relativeX, y: relativeY },
                 { x: parseFloat(velX.value), y: parseFloat(velY.value) },
                 Constants.ELEMENTARY_CHARGE * -parseFloat(mag.value),
-                Constants.ELECTRON_MASS
+                Constants.ELECTRON_MASS,
+                4
             )
             space.placeTestCharge(testCharge)
             break;
@@ -90,6 +102,14 @@ checkboxswitch.addEventListener("click", (e) => {
         space.chargedSurfaceActive = true
     } else {
         space.chargedSurfaceActive = false
+    }
+})
+
+checkboxswitch2.addEventListener("click", (e) => {
+    if (checkboxswitch2.checked) {
+        space.chargedMouseActive = true
+    } else {
+        space.chargedMouseActive = false
     }
 })
 

@@ -1,7 +1,7 @@
 import { IChargedParticle, ICentralElectricField } from "./interfaces.js";
 import Vec2 from "./vector.js";
 
-class MovingCharge implements IChargedParticle, ICentralElectricField {
+class Charge implements IChargedParticle, ICentralElectricField {
     public id: string
     public pos: Vec2
     public vel: Vec2
@@ -16,6 +16,7 @@ class MovingCharge implements IChargedParticle, ICentralElectricField {
         initial_vel: Vec2,
         magnitude: number,
         mass: number,
+        radius: number
     ) {
         this.id = id
         this.pos = initial_pos
@@ -23,7 +24,7 @@ class MovingCharge implements IChargedParticle, ICentralElectricField {
         this.acc = { x: 0, y: 0 }
         this.magnitude = magnitude
         this.mass = mass
-        this.radius = 8
+        this.radius = radius
     }
 
     getColor(): string {
@@ -65,4 +66,4 @@ class MovingCharge implements IChargedParticle, ICentralElectricField {
     }
 }
 
-export default MovingCharge
+export default Charge

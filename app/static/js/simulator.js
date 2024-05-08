@@ -5,15 +5,17 @@ class ElectricFieldSimulator {
     constructor(canvas) {
         this.canvas = canvas;
         this.blocks = [];
-        this.charges = [];
+        this.Charges = [];
         this.staticCharges = [];
         this.testCharges = [];
         this.prevtimestamp = 0;
         this.pause = true;
         this.chargedSurfaceActive = true;
+        this.chargedMouseActive = false;
         this.canvas.width = window.innerWidth - 42;
         this.canvas.height = window.innerHeight - 400;
         this.context = this.canvas.getContext('2d');
+        this.mousePos = { x: 0, y: 0 };
     }
     init() {
         // let this be infinitely large surface (negative charge)
@@ -54,8 +56,8 @@ class ElectricFieldSimulator {
         // draw:
         this.context.stroke();
     }
-    placeCharge(charge) {
-        this.charges.push(charge);
+    placeCharge(Charge) {
+        this.Charges.push(Charge);
     }
     placeStaticCharge(staticCharge) {
         this.staticCharges.push(staticCharge);
@@ -81,11 +83,11 @@ class ElectricFieldSimulator {
             y = -10 * Math.pow(10, -12);
         }
         const surfaceField = { x: 0, y: y };
-        const movingCharges = [
-            ...this.charges,
+        const Charges = [
+            ...this.Charges,
             ...this.testCharges
         ];
-        movingCharges.forEach((charge) => {
+        Charges.forEach((charge) => {
             const fieldSuperposition = this.computeFieldSuperposition(charge);
             const fieldTotal = Vec2.add(surfaceField, fieldSuperposition);
             let force = Vec2.multiply(fieldTotal, -charge.magnitude);
@@ -94,10 +96,19 @@ class ElectricFieldSimulator {
         });
     }
     computeFieldSuperposition(charge) {
+        let mouseElectricField = {
+            id: "mouseElectricField",
+            pos: this.mousePos,
+            magnitude: 0
+        };
+        if (this.chargedMouseActive) {
+            mouseElectricField.magnitude = 100 * Constants.ELEMENTARY_CHARGE;
+        }
         let fieldSuperposition = { x: 0, y: 0 };
         const electricFields = [
-            ...this.charges,
-            ...this.staticCharges
+            ...this.Charges,
+            ...this.staticCharges,
+            mouseElectricField
         ];
         const otherElectricFields = electricFields.filter((field) => {
             return field.id !== charge.id;
@@ -123,7 +134,7 @@ class ElectricFieldSimulator {
     }
     draw() {
         const drawables = [
-            ...this.charges,
+            ...this.Charges,
             ...this.staticCharges,
             ...this.testCharges,
             ...this.blocks
@@ -135,7 +146,7 @@ class ElectricFieldSimulator {
     restart() {
         this.blocks = [];
         this.staticCharges = [];
-        this.charges = [];
+        this.Charges = [];
         this.testCharges = [];
         this.prevtimestamp = 0;
         this.init();
