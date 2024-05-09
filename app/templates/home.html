@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container mt-5">
+    <div class="mt-4 p-5 bg-dark text-white rounded opacity-75">
+      <h1>Welcome to my website!</h1> 
+      <p>You can find my projects here...</p> 
+      <img src="{{ url_for('static', filename='img/me3.jpg') }}" class="rounded img-fluid" alt="Responsive image">
+    </div>
+</div>
 
 {% endblock %}

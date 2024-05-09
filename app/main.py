@@ -6,6 +6,10 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
+
 @app.route('/electric-field', methods=['GET'])
 def electric_field():
     return render_template('electric_field.html')
