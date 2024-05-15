@@ -1,0 +1,7 @@
+Site: 
+    Improve design (menu, navigation, colors etc...)
+
+Electric Field Project: 
+    Better menu?
+    Field potential background and field intensity vectors
+    Add charged surfaces (diffrent shapes)
