@@ -5,20 +5,19 @@ interface ISpaceElement {
     pos: Vec2
 }
 
-interface IDrawable extends ISpaceElement {
+interface IDrawable {
     draw(ctx: CanvasRenderingContext2D): void
     update(dt: number): void
 }
 
-interface IChargedParticle extends IDrawable {
+interface IParticle extends ISpaceElement {
     mass: number
     vel: Vec2
-    magnitude: number
     applyForce(force: Vec2): void
 }
 
 interface ICentralElectricField extends ISpaceElement {
-    magnitude: number,
+    magnitude: number
 }
 
-export { IDrawable, IChargedParticle, ICentralElectricField }
+export { ISpaceElement, IDrawable, IParticle, ICentralElectricField }

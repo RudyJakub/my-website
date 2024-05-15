@@ -1,7 +1,7 @@
-import { IDrawable } from "./interfaces";
+import { IDrawable, ISpaceElement } from "./interfaces";
 import Vec2 from "./vector";
 
-class Block implements IDrawable {
+class Block implements IDrawable, ISpaceElement {
     constructor(public id: string, public pos: Vec2, public size: Vec2, public color: string) {}
 
     draw(ctx: CanvasRenderingContext2D): void {

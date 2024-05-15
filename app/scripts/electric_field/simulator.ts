@@ -1,7 +1,7 @@
 import Block from "./block.js";
 import Charge from "./charge.js"
 import Vec2 from "./vector.js";
-import {IDrawable, ICentralElectricField, IChargedParticle } from "./interfaces.js";
+import {IDrawable, ICentralElectricField, IParticle } from "./interfaces.js";
 import Constants from "./constants.js";
 
 class ElectricFieldSimulator {
@@ -99,8 +99,8 @@ class ElectricFieldSimulator {
         }
         const surfaceField = { x: 0, y: y }
         const Charges = [
-            ...this.Charges as IChargedParticle[],
-            ...this.testCharges as IChargedParticle[]
+            ...this.Charges as Charge[],
+            ...this.testCharges as Charge[]
         ]
         Charges.forEach((charge) => {
             const fieldSuperposition = this.computeFieldSuperposition(charge)
@@ -111,7 +111,7 @@ class ElectricFieldSimulator {
         })
     }
 
-    computeFieldSuperposition(charge: IChargedParticle): Vec2 {
+    computeFieldSuperposition(charge: Charge): Vec2 {
         let fieldSuperposition: Vec2 = { x: 0, y: 0 }
         const electricFields: ICentralElectricField[] = [
             ...this.Charges as ICentralElectricField[],
