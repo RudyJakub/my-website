@@ -1,4 +1,4 @@
-class Vec2 implements Vec2 {
+class Vec2 {
     public x: number
     public y: number
 
