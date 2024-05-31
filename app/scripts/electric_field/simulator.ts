@@ -1,7 +1,7 @@
 import Block from "./block.js";
 import Charge from "./charge.js"
 import Vec2 from "./vector.js";
-import {IDrawable, ICentralElectricField, IParticle } from "./interfaces.js";
+import { IDrawable, ICentralElectricField } from "./interfaces.js";
 import Constants from "./constants.js";
 
 class ElectricFieldSimulator {
@@ -15,8 +15,6 @@ class ElectricFieldSimulator {
     public chargedSurfaceActive = true
 
     constructor(private canvas: HTMLCanvasElement) {
-        this.canvas.width = window.innerWidth - 42
-        this.canvas.height = window.innerHeight - 400
         this.context = this.canvas.getContext('2d')!;
     }
 
@@ -82,12 +80,10 @@ class ElectricFieldSimulator {
     loop(timestamp: number) {
         let dt = (timestamp - this.prevtimestamp) * 0.001
         this.prevtimestamp = timestamp
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.draw();
         if (!this.pause) {
             this.update(dt);
         }
-        this.drawLegend()
         window.requestAnimationFrame(this.loop.bind(this));
     }
 
@@ -141,6 +137,7 @@ class ElectricFieldSimulator {
     }
 
     draw() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         const drawables: IDrawable[] = [
             ...this.Charges,
             ...this.staticCharges,
@@ -150,6 +147,7 @@ class ElectricFieldSimulator {
         drawables.forEach((drawable) => {
             drawable.draw(this.context)
         })
+        this.drawLegend()
     }
 
     restart() {

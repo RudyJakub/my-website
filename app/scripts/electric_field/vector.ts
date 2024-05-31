@@ -26,6 +26,10 @@ class Vec2 {
     static distance(u: Vec2, v: Vec2): number {
         return Math.sqrt((Math.pow((v.x - u.x), 2) + Math.pow((v.y - u.y), 2)))
     }
+
+    static abs(v: Vec2): number {
+        return Math.pow(v.x*v.x+v.y+v.y, 0.5)
+    }
 }
 
 export default Vec2

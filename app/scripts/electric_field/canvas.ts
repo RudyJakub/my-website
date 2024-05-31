@@ -9,6 +9,8 @@ enum ChargeTypes {
 }
 
 const canvas = document.getElementById('canvas')! as HTMLCanvasElement;
+canvas.width = window.innerWidth - 42
+canvas.height = window.innerHeight - 400
 const space = new ElectricFieldSimulator(canvas)
 const velX = document.getElementById("velX")! as HTMLInputElement
 const velY = document.getElementById("velY")! as HTMLInputElement
