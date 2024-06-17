@@ -7,17 +7,15 @@ services:
     volumes:
       - ./app:/app
     restart: on-failure
+    depends_on:
+      - db
   db:
-    image: mysql:8.0
+    image: postgres:14-alpine
     ports:
-      - "3305:3306"
-    restart: always
-    environment:
-      MYSQL_DATABASE: rudy_db
-      MYSQL_ROOT_PASSWORD: 123
+      - 5432:5432
     volumes:
-      - db:/var/lib/mysql
-
-volumes:
-  db:
-    driver: local
+      - /var/postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=rudy
+      - POSTGRES_DB=rudy_db

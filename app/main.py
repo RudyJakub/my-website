@@ -1,9 +1,11 @@
 from flask import Flask, render_template
+from database import db
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def home():
+    db.execute("select * from articles;")
     return render_template('home.html')
 
 @app.route('/about', methods=['GET'])
