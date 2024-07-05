@@ -1,12 +1,13 @@
 services:
   web:
     build: './app'
-    command: sh -c "python main.py"
+    # command: sh -c "python main.py"
+    command: sh -c "gunicorn --bind 0.0.0.0:5000 wsgi:app loglevel=debug"
     ports:
       - '5000:5000'
     volumes:
       - ./app:/app
-    restart: on-failure
+    # restart: on-failure
     depends_on:
       - db
   db:
@@ -19,3 +20,9 @@ services:
       - POSTGRES_PASSWORD=123
       - POSTGRES_USER=rudy
       - POSTGRES_DB=rudy_db
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web
